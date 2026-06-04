@@ -14,13 +14,19 @@
    cd backend-proyecto-peliculas-series-jean-paul
    ```
 
-3. Instala las dependencias:
+3. Cambiar a la rama `dev`:
+
+   ```bash
+   git switch dev
+   ```
+
+4. Instala las dependencias:
 
    ```bash
    npm install
    ```
 
-4. Crea un archivo `.env` basado en el archivo `.env-example` y configura tus variables de entorno:
+5. Crea un archivo `.env` basado en el archivo `.env-example` y configura tus variables de entorno:
 
    ```bash
    cp .env-example .env
@@ -28,7 +34,7 @@
 
    Luego, edita el archivo `.env` para agregar tu configuración personalizada, como el puerto y la URI de MongoDB.
 
-5. Inicia el servidor:
+6. Inicia el servidor:
    ```bash
    npm start
    ```
