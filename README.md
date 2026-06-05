@@ -42,3 +42,57 @@
    ```bash
    npm run dev
    ```
+
+## Uso
+
+Una vez que el servidor esté en funcionamiento, puedes acceder a la API a través de `http://localhost:<PORT>/api`, donde `<PORT>` es el puerto que configuraste en tu archivo `.env`.
+
+### Obtener todas las películas
+
+metodo GET a `/api/movies` para obtener una lista de todas las películas.
+
+response:
+
+```json
+[
+  {
+    "_id": "6a2...",
+    "title": "Breaking Bad",
+    "genre": "Drama",
+    "year": 2008,
+    "image": "https://picsum.photos/300/400?random=1",
+    "featured": true,
+    "createdAt": "2026-06-05T17:31:02.907Z",
+    "updatedAt": "2026-06-05T17:31:02.907Z"
+  }
+]
+```
+
+### Obtener una película por ID
+
+metodo GET a `/api/movies/:id` para obtener los detalles de una película específica por su ID.
+
+response:
+
+status: 200
+
+```json
+{
+  "_id": "6a2...",
+  "title": "Breaking Bad",
+  "genre": "Drama",
+  "year": 2008,
+  "image": "https://picsum.photos/300/400?random=1",
+  "featured": true,
+  "createdAt": "2026-06-05T17:31:02.907Z",
+  "updatedAt": "2026-06-05T17:31:02.907Z"
+}
+```
+
+status: 404
+
+```json
+{
+  "message": "Pelicula no encontrada"
+}
+```
