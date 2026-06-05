@@ -4,8 +4,9 @@ const movieSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      require: true,
+      required: [true, "El titulo es obligatorio"],
       trim: true,
+      minlength: [3, "El titulo debe tener al menos 3 caracteres"],
     },
     description: {
       type: String,
@@ -14,16 +15,16 @@ const movieSchema = new mongoose.Schema(
     },
     genre: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
     },
     year: {
       type: Number,
-      require: true,
+      required: true,
     },
     image: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
     },
     featured: {

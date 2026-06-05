@@ -1,5 +1,35 @@
 import Movie from "../models/Movie.js";
 
+export const createMovie = async (req, res) => {
+  try {
+    const { title, genre, year, image } = req.body;
+
+    if (!title || title.trim() === "" || title.length < 3) {
+      return res.status(422).json({
+        message: "El titulo es obligatorio y debe tener al menos 3 caracteres",
+      });
+    }
+
+    if (!title || !genre || !year || !image) {
+      return res
+        .status(422)
+        .json({ message: "Todos los campos son obligatorios" });
+    }
+
+    const movie = await Movie.create(req.body);
+
+    res.status(201).json(movie);
+  } catch (error) {
+    // console.log(error);
+
+    if (error.name === "ValidationError") {
+      return res.status(422).json({ message: error.message });
+    }
+
+    res.status(500).json({ message: "Error al crear la pelicula" });
+  }
+};
+
 export const getMovies = async (req, res) => {
   try {
     const movies = await Movie.find().select("-description -__v");
