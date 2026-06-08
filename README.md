@@ -43,6 +43,14 @@
    npm run dev
    ```
 
+## Seeders
+
+Si deseas poblar la base de datos con datos de ejemplo, puedes ejecutar el seeder:
+
+```bash
+npm run seed
+```
+
 ## Uso
 
 Una vez que el servidor esté en funcionamiento, puedes acceder a la API a través de `http://localhost:<PORT>/api`, donde `<PORT>` es el puerto que configuraste en tu archivo `.env`.

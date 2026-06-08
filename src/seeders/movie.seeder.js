@@ -89,7 +89,7 @@ const seedMovies = async () => {
     await Movie.deleteMany();
     await Movie.insertMany(movies);
 
-    console.log("Pelicular cargadas correctamente");
+    console.log("Peliculas cargadas correctamente");
     process.exit(0);
   } catch (error) {
     console.log(error.message);

@@ -21,7 +21,7 @@ export const createMovie = async (req, res) => {
     res.status(201).json(movie);
   } catch (error) {
     // console.log(error);
-
+    
     if (error.name === "ValidationError") {
       return res.status(422).json({ message: error.message });
     }
@@ -54,7 +54,6 @@ export const getMovieById = async (req, res) => {
     res.json(movie);
   } catch (error) {
     // console.log(error.message);
-
     res.status(500).json({ message: "Error al obtener la pelicula" });
   }
 };
