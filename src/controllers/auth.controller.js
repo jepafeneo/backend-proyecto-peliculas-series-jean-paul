@@ -2,6 +2,21 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const isEmailValid = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  return emailRegex.test(email);
+};
+
+const isPasswordValid = (password) => {
+  return password.length >= 6;
+};
+
+const getToken = (user) => {
+  return jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+};
+
 export const register = async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -14,13 +29,11 @@ export const register = async (req, res) => {
         .json({ message: "Todos los campos son obligatorios" });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-    if (!emailRegex.test(email)) {
+    if (!isEmailValid(email)) {
       return res.status(422).json({ message: "El correo no es valido" });
     }
 
-    if (password.length < 5) {
+    if (!isPasswordValid(password)) {
       return res
         .status(422)
         .json({ message: "Contraseña muy corta, mínimo 6 caracteres" });
@@ -65,13 +78,11 @@ export const login = async (req, res) => {
         .json({ message: "Todos los campos son obligatorios" });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-    if (!emailRegex.test(email)) {
+    if (!isEmailValid(email)) {
       return res.status(422).json({ message: "El correo no es valido" });
     }
 
-    if (password.length < 5) {
+    if (!isPasswordValid(password)) {
       return res
         .status(422)
         .json({ message: "Contraseña muy corta, mínimo 6 caracteres" });
@@ -83,15 +94,13 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Credenciales invalidas" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) {
+    if (!isPasswordCorrect) {
       return res.status(401).json({ message: "Credenciales invalidas" });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = getToken(user);
 
     res.json({
       message: "Login correcto",
@@ -105,6 +114,6 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ mesage: "Error al iniciar sesión" });
+    res.status(500).json({ message: "Error al iniciar sesión" });
   }
 };

@@ -8,16 +8,19 @@ import {
   deleteMovie,
 } from "../controllers/movie.controller.js";
 
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { adminMiddleware } from "../middlewares/admin.middleware.js";
+
 const router = Router();
 
 // prefijo: /api/movies
 
-router.post("/", createMovie);
+router.post("/", authMiddleware, adminMiddleware, createMovie);
 
 router.get("/", getMovies);
 router.get("/:id", getMovieById);
 
-router.put("/:id", updateMovie);
-router.delete("/:id", deleteMovie);
+router.put("/:id", authMiddleware, updateMovie);
+router.delete("/:id", authMiddleware, deleteMovie);
 
 export default router;
