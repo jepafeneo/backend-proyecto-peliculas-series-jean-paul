@@ -2,6 +2,8 @@ import Movie from "../models/Movie.js";
 
 export const createMovie = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { title, genre, year, image } = req.body;
 
     if (!title || title.trim() === "" || title.length < 3) {
@@ -21,7 +23,7 @@ export const createMovie = async (req, res) => {
     res.status(201).json(movie);
   } catch (error) {
     // console.log(error);
-    
+
     if (error.name === "ValidationError") {
       return res.status(422).json({ message: error.message });
     }
@@ -36,7 +38,7 @@ export const getMovies = async (req, res) => {
 
     res.json(movies);
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     res.status(500).json({ message: "Error al obtener las peliculas" });
   }
 };
@@ -60,6 +62,8 @@ export const getMovieById = async (req, res) => {
 
 export const updateMovie = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { id } = req.params;
 
     if (typeof req.body.title != "string") {
@@ -91,6 +95,8 @@ export const updateMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { id } = req.params;
 
     const movie = await Movie.findByIdAndDelete(id);
