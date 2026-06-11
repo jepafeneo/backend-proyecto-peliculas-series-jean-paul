@@ -8,6 +8,7 @@ import express from "express";
 import cors from "cors";
 
 import movieRouter from "./src/routes/movie.router.js";
+import authRouter from "./src/routes/auth.router.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/movies", movieRouter);
+app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 3001;
 
