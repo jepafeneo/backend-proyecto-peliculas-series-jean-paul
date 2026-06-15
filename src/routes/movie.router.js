@@ -20,7 +20,7 @@ router.post("/", authMiddleware, adminMiddleware, createMovie);
 router.get("/", getMovies);
 router.get("/:id", getMovieById);
 
-router.put("/:id", authMiddleware, updateMovie);
-router.delete("/:id", authMiddleware, deleteMovie);
+router.put("/:id", authMiddleware, adminMiddleware, updateMovie);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteMovie);
 
 export default router;
