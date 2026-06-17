@@ -23,7 +23,7 @@ export const register = async (req, res) => {
 
     const password = String(req.body.password);
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || password == "undefined") {
       return res
         .status(422)
         .json({ message: "Todos los campos son obligatorios" });
