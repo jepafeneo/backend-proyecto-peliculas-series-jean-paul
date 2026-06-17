@@ -2,7 +2,7 @@ import Movie from "../models/Movie.js";
 
 export const createMovie = async (req, res) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const { title, genre, year, image } = req.body;
 
@@ -62,7 +62,7 @@ export const getMovieById = async (req, res) => {
 
 export const updateMovie = async (req, res) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const { id } = req.params;
 
