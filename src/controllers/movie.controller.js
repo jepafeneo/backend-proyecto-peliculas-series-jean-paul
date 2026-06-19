@@ -34,12 +34,26 @@ export const createMovie = async (req, res) => {
 
 export const getMovies = async (req, res) => {
   try {
-    const { sortBy = "title", order = "asc" } = req.query;
+    const { sortBy = "title", order = "asc", search = "" } = req.query;
 
-    const movies = await Movie.find()
+    const movies = await Movie.find({
+      $or: [
+        {
+          title: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          description: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ],
+    })
       .select("-description -__v")
       .sort({ [sortBy]: order === "desc" ? -1 : 1 });
-    // .sort({ year: 1 });
 
     res.json(movies);
   } catch (error) {
