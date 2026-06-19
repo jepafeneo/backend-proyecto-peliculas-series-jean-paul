@@ -32,6 +32,18 @@ const movieSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // order: {
+    //   type: Number,
+    //   default: 0,
+    // },
+    // news: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // publisher: {
+    //   type: Boolean,
+    //   default: false,
+    // },
   },
   {
     timestamps: true,
