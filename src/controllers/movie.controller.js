@@ -66,7 +66,14 @@ export const getMovies = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    res.json(movies);
+    const totalMovies = await Movie.countDocuments();
+
+    res.json({
+      movies,
+      totalPages: Math.ceil(totalMovies / limit),
+      currentPage: page,
+      totalMovies,
+    });
   } catch (error) {
     // console.log(error.message);
     res.status(500).json({ message: "Error al obtener las peliculas" });
