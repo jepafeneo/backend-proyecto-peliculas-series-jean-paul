@@ -36,6 +36,10 @@ export const getMovies = async (req, res) => {
   try {
     const { sortBy = "title", order = "asc", search = "", genre } = req.query;
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+    const skip = (page - 1) * limit;
+
     const movies = await Movie.find({
       $and: [
         {
@@ -58,7 +62,9 @@ export const getMovies = async (req, res) => {
       ],
     })
       .select("-description -__v")
-      .sort({ [sortBy]: order === "desc" ? -1 : 1 });
+      .sort({ [sortBy]: order === "desc" ? -1 : 1 })
+      .skip(skip)
+      .limit(limit);
 
     res.json(movies);
   } catch (error) {
