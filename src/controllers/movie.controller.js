@@ -40,7 +40,7 @@ export const getMovies = async (req, res) => {
     const limit = parseInt(req.query.limit) || 4;
     const skip = (page - 1) * limit;
 
-    const movies = await Movie.find({
+    const filters = {
       $and: [
         {
           $or: [
@@ -60,13 +60,15 @@ export const getMovies = async (req, res) => {
         },
         genre ? { genre } : {},
       ],
-    })
+    };
+
+    const movies = await Movie.find(filters)
       .select("-description -__v")
       .sort({ [sortBy]: order === "desc" ? -1 : 1 })
       .skip(skip)
       .limit(limit);
 
-    const totalMovies = await Movie.countDocuments();
+    const totalMovies = await Movie.countDocuments(filters);
 
     res.json({
       movies,
