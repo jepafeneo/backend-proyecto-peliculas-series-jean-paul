@@ -82,6 +82,16 @@ export const getMovies = async (req, res) => {
   }
 };
 
+export const getMoviesGenres = async (req, res) => {
+  try {
+    const genres = await Movie.distinct("genre");
+    
+    res.json(genres);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener los generos" });
+  }
+};
+
 export const getMovieById = async (req, res) => {
   const { id } = req.params;
 

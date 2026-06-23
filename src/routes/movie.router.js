@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   createMovie,
   getMovies,
+  getMoviesGenres,
   getMovieById,
   updateMovie,
   deleteMovie,
@@ -16,6 +17,8 @@ const router = Router();
 // prefijo: /api/movies
 
 router.post("/", authMiddleware, adminMiddleware, createMovie);
+
+router.get("/genres", getMoviesGenres);
 
 router.get("/", getMovies);
 router.get("/:id", getMovieById);
