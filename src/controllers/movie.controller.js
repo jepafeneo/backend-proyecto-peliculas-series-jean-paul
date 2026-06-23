@@ -85,10 +85,26 @@ export const getMovies = async (req, res) => {
 export const getMoviesGenres = async (req, res) => {
   try {
     const genres = await Movie.distinct("genre");
-    
+
     res.json(genres);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener los generos" });
+  }
+};
+
+export const getMoviesFeatured = async (req, res) => {
+  try {
+    const featuredMovies = await Movie.find({ featured: true })
+      .select("-description -__v")
+      .limit(3);
+
+    res.json({
+      movies: featuredMovies,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener las peliculas destacadas" });
   }
 };
 

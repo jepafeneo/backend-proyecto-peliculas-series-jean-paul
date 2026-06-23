@@ -4,6 +4,7 @@ import {
   createMovie,
   getMovies,
   getMoviesGenres,
+  getMoviesFeatured,
   getMovieById,
   updateMovie,
   deleteMovie,
@@ -19,6 +20,7 @@ const router = Router();
 router.post("/", authMiddleware, adminMiddleware, createMovie);
 
 router.get("/genres", getMoviesGenres);
+router.get("/featured", getMoviesFeatured);
 
 router.get("/", getMovies);
 router.get("/:id", getMovieById);
