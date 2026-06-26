@@ -1,106 +1,524 @@
-# Backend Proyecto peliculas y series - Jean Paul
+# Películas y Series API
 
-## Instalación
+API REST desarrollada con Node.js, Express y MongoDB para gestionar películas y series.
 
-1. Clona el repositorio:
+---
 
-   ```bash
-   git clone <repository_url>
-   ```
+# Características
 
-2. Navega al directorio del proyecto:
+- CRUD completo de películas
+- Registro de usuarios
+- Inicio de sesión con JWT
+- Contraseñas encriptadas con bcrypt
+- Autenticación mediante Bearer Token
+- MongoDB Atlas
+- Seeder de datos iniciales
+- Tests con Vitest y Supertest
 
-   ```bash
-   cd backend-proyecto-peliculas-series-jean-paul
-   ```
+---
 
-3. Cambiar a la rama `dev`:
+# 🛠 Tecnologías utilizadas
 
-   ```bash
-   git switch dev
-   ```
+- Node.js
+- Express
+- MongoDB Atlas
+- Mongoose
+- JWT
+- bcryptjs
+- dotenv
+- cors
+- Vitest
+- Supertest
 
-4. Instala las dependencias:
+---
 
-   ```bash
-   npm install
-   ```
+# Instalación
 
-5. Crea un archivo `.env` basado en el archivo `.env-example` y configura tus variables de entorno:
+Clonar el repositorio:
 
-   ```bash
-   cp .env-example .env
-   ```
+```bash
+git clone <url-del-repositorio>
+```
 
-   Luego, edita el archivo `.env` para agregar tu configuración personalizada, como el puerto y la URI de MongoDB.
+Ingresar al proyecto:
 
-6. Inicia el servidor:
-   ```bash
-   npm start
-   ```
-   Para desarrollo con recarga automática, puedes usar:
-   ```bash
-   npm run dev
-   ```
+```bash
+cd backend-proyecto-peliculas-series
+```
 
-## Seeders
+Instalar dependencias:
 
-Si deseas poblar la base de datos con datos de ejemplo, puedes ejecutar el seeder:
+```bash
+npm install
+```
+
+---
+
+# Variables de entorno
+
+Crear un archivo `.env` utilizando como referencia `.env.example`.
+
+## .env.example
+
+```env
+PORT=
+MONGODB_URI=
+JWT_SECRET=
+```
+
+## Ejemplo
+
+```env
+PORT=3000
+MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/moviesdb
+JWT_SECRET=mi-clave-secreta
+```
+
+---
+
+# Ejecutar en desarrollo
+
+```bash
+npm run dev
+```
+
+---
+
+# Ejecutar en producción
+
+```bash
+npm start
+```
+
+---
+
+# Ejecutar tests
+
+```bash
+npm test
+```
+
+---
+
+# Cargar datos iniciales
 
 ```bash
 npm run seed
 ```
 
-## Uso
+---
 
-Una vez que el servidor esté en funcionamiento, puedes acceder a la API a través de `http://localhost:<PORT>/api`, donde `<PORT>` es el puerto que configuraste en tu archivo `.env`.
+# Endpoints
 
-### Obtener todas las películas
+---
 
-metodo GET a `/api/movies` para obtener una lista de todas las películas.
+## Home
 
-response:
+### GET /
+
+Devuelve un mensaje de bienvenida.
+
+### Respuesta Exitosa
+
+#### Status: 200 OK
+
+```json
+{
+  "message": "Bienvenidos a la API de películas y series"
+}
+```
+
+---
+
+# Autenticación
+
+## Registro
+
+### POST /api/auth/register
+
+Registra un nuevo usuario.
+
+### Body
+
+```json
+{
+  "name": "Juan Pérez",
+  "email": "juan@example.com",
+  "password": "123456"
+}
+```
+
+### Respuesta Exitosa
+
+#### Status: 201 Created
+
+```json
+{
+  "message": "Usuario registrado correctamente"
+}
+```
+
+### Posibles Errores
+
+#### Status: 400 Bad Request
+
+```json
+{
+  "message": "Todos los campos son obligatorios"
+}
+```
+
+#### Status: 400 Bad Request
+
+```json
+{
+  "message": "El usuario ya existe"
+}
+```
+
+#### Status: 500 Internal Server Error
+
+```json
+{
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+## Login
+
+### POST /api/auth/login
+
+Inicia sesión y devuelve un token JWT.
+
+### Body
+
+```json
+{
+  "email": "juan@example.com",
+  "password": "123456"
+}
+```
+
+### Respuesta Exitosa
+
+#### Status: 200 OK
+
+```json
+{
+  "token": "jwt-token",
+  "user": {
+    "_id": "...",
+    "name": "Juan Pérez",
+    "email": "juan@example.com"
+  }
+}
+```
+
+### Posibles Errores
+
+#### Status: 400 Bad Request
+
+```json
+{
+  "message": "Todos los campos son obligatorios"
+}
+```
+
+#### Status: 401 Unauthorized
+
+```json
+{
+  "message": "Credenciales inválidas"
+}
+```
+
+#### Status: 500 Internal Server Error
+
+```json
+{
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+# Películas
+
+## Obtener todas las películas
+
+### GET /api/movies
+
+Devuelve todas las películas.
+
+### Respuesta Exitosa
+
+#### Status: 200 OK
 
 ```json
 [
   {
-    "_id": "6a2...",
-    "title": "Breaking Bad",
-    "genre": "Drama",
-    "year": 2008,
-    "image": "https://picsum.photos/300/400?random=1",
-    "featured": true,
-    "createdAt": "2026-06-05T17:31:02.907Z",
-    "updatedAt": "2026-06-05T17:31:02.907Z"
+    "_id": "...",
+    "title": "Matrix",
+    "genre": "Acción",
+    "year": 1999,
+    "image": "https://..."
   }
 ]
 ```
 
-### Obtener una película por ID
-
-metodo GET a `/api/movies/:id` para obtener los detalles de una película específica por su ID.
-
-response:
-
-status: 200
+#### Status: 500 Internal Server Error
 
 ```json
 {
-  "_id": "6a2...",
-  "title": "Breaking Bad",
-  "genre": "Drama",
-  "year": 2008,
-  "image": "https://picsum.photos/300/400?random=1",
-  "featured": true,
-  "createdAt": "2026-06-05T17:31:02.907Z",
-  "updatedAt": "2026-06-05T17:31:02.907Z"
+  "message": "Error interno del servidor"
 }
 ```
 
-status: 404
+---
+
+## Obtener película por ID
+
+### GET /api/movies/:id
+
+Devuelve una película por su ID.
+
+### Respuesta Exitosa
+
+#### Status: 200 OK
 
 ```json
 {
-  "message": "Pelicula no encontrada"
+  "_id": "...",
+  "title": "Matrix",
+  "genre": "Acción",
+  "year": 1999,
+  "image": "https://..."
 }
 ```
+
+### Posibles Errores
+
+#### Status: 404 Not Found
+
+```json
+{
+  "message": "Película no encontrada"
+}
+```
+
+#### Status: 500 Internal Server Error
+
+```json
+{
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+## Crear película
+
+### POST /api/movies
+
+Requiere autenticación.
+
+### Headers
+
+```txt
+Authorization: Bearer TOKEN
+```
+
+### Body
+
+```json
+{
+  "title": "Matrix",
+  "genre": "Acción",
+  "year": 1999,
+  "image": "https://..."
+}
+```
+
+### Respuesta Exitosa
+
+#### Status: 201 Created
+
+```json
+{
+  "_id": "...",
+  "title": "Matrix",
+  "genre": "Acción",
+  "year": 1999,
+  "image": "https://..."
+}
+```
+
+### Posibles Errores
+
+#### Status: 401 Unauthorized
+
+```json
+{
+  "message": "No autorizado"
+}
+```
+
+#### Status: 400 Bad Request
+
+```json
+{
+  "message": "Datos inválidos"
+}
+```
+
+#### Status: 500 Internal Server Error
+
+```json
+{
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+## Actualizar película
+
+### PUT /api/movies/:id
+
+Requiere autenticación.
+
+### Headers
+
+```txt
+Authorization: Bearer TOKEN
+```
+
+### Respuesta Exitosa
+
+#### Status: 200 OK
+
+```json
+{
+  "_id": "...",
+  "title": "Matrix Recargada",
+  "genre": "Acción",
+  "year": 2003,
+  "image": "https://..."
+}
+```
+
+### Posibles Errores
+
+#### Status: 401 Unauthorized
+
+```json
+{
+  "message": "No autorizado"
+}
+```
+
+#### Status: 404 Not Found
+
+```json
+{
+  "message": "Película no encontrada"
+}
+```
+
+#### Status: 500 Internal Server Error
+
+```json
+{
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+## Eliminar película
+
+### DELETE /api/movies/:id
+
+Requiere autenticación.
+
+### Headers
+
+```txt
+Authorization: Bearer TOKEN
+```
+
+### Respuesta Exitosa
+
+#### Status: 200 OK
+
+```json
+{
+  "message": "Película eliminada correctamente"
+}
+```
+
+### Posibles Errores
+
+#### Status: 401 Unauthorized
+
+```json
+{
+  "message": "No autorizado"
+}
+```
+
+#### Status: 404 Not Found
+
+```json
+{
+  "message": "Película no encontrada"
+}
+```
+
+#### Status: 500 Internal Server Error
+
+```json
+{
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+# Deploy
+
+Backend desplegado en Render.
+
+```txt
+https://mi-api.onrender.com
+```
+
+---
+
+# Estructura del proyecto
+
+```txt
+src/
+│
+├── config/
+├── controllers/
+├── middlewares/
+├── models/
+├── routes/
+├── seeders/
+├── tests/
+│
+└── app.js
+
+index.js
+```
+
+---
+
+# Autor
+
+Proyecto desarrollado como práctica del curso Full Stack de Neoland.
+
+Autor: Jean Paul Ferreira

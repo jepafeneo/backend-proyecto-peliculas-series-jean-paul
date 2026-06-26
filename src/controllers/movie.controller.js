@@ -34,12 +34,77 @@ export const createMovie = async (req, res) => {
 
 export const getMovies = async (req, res) => {
   try {
-    const movies = await Movie.find().select("-description -__v");
+    const { sortBy = "title", order = "asc", search = "", genre } = req.query;
 
-    res.json(movies);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+    const skip = (page - 1) * limit;
+
+    const filters = {
+      $and: [
+        {
+          $or: [
+            {
+              title: {
+                $regex: search,
+                $options: "i",
+              },
+            },
+            {
+              description: {
+                $regex: search,
+                $options: "i",
+              },
+            },
+          ],
+        },
+        genre ? { genre } : {},
+      ],
+    };
+
+    const movies = await Movie.find(filters)
+      .select("-description -__v")
+      .sort({ [sortBy]: order === "desc" ? -1 : 1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalMovies = await Movie.countDocuments(filters);
+
+    res.json({
+      movies,
+      totalPages: Math.ceil(totalMovies / limit),
+      currentPage: page,
+      totalMovies,
+    });
   } catch (error) {
     // console.log(error.message);
     res.status(500).json({ message: "Error al obtener las peliculas" });
+  }
+};
+
+export const getMoviesGenres = async (req, res) => {
+  try {
+    const genres = await Movie.distinct("genre");
+
+    res.json(genres);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener los generos" });
+  }
+};
+
+export const getMoviesFeatured = async (req, res) => {
+  try {
+    const featuredMovies = await Movie.find({ featured: true })
+      .select("-description -__v")
+      .limit(3);
+
+    res.json({
+      movies: featuredMovies,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener las peliculas destacadas" });
   }
 };
 
