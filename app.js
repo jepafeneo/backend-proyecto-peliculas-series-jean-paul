@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.json({ message: "Bienvenidos a la API de películas y series" });
+  res.json({ message: "Bienvenidos a la API de películas y series DEV" });
 });
 
 app.use("/api/movies", movieRouter);
